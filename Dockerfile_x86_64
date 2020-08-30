@@ -1,0 +1,16 @@
+FROM alpine:3.5
+MAINTAINER Scott Mebberson (https://github.com/smebberson/docker-alpine)
+
+# Add s6-overlay
+ENV S6_OVERLAY_VERSION=v1.19.1.1 \
+    GO_DNSMASQ_VERSION=1.0.7
+
+RUN apk add --update --no-cache bind-tools curl libcap dnsmasq && \
+    curl -sSL https://github.com/just-containers/s6-overlay/releases/download/${S6_OVERLAY_VERSION}/s6-overlay-amd64.tar.gz \
+    | tar xfz - -C / && \ 
+    apk del curl 
+
+COPY root /
+
+ENTRYPOINT ["/init"]
+CMD []
